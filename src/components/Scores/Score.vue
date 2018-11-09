@@ -69,6 +69,10 @@
             <v-ons-col>Cab</v-ons-col>
             <v-ons-col>{{item.arcadeCab.name}}</v-ons-col>
           </v-ons-list-item>
+          <v-ons-list-item>
+            <v-ons-col>Played at</v-ons-col>
+            <v-ons-col>{{item.playedAt | moment("Y-m-d H:M:s")}}</v-ons-col>
+          </v-ons-list-item>
         </v-ons-list>
         <ons-progress-circular indeterminate v-show="loading"></ons-progress-circular>
       </div>

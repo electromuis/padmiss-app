@@ -6,17 +6,16 @@
             @push="pageStack.push($event)"
     >
       <v-ons-page>
-       Hello, login plz
         <v-ons-list>
           <v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-input class="center" v-model="email" placeholder="email@domain.com" type="email"></v-ons-input>
+              <v-ons-input class="center" v-model="cardId" placeholder="00000000" type="text"></v-ons-input>
             </v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-input class="center" v-model="password" placeholder="****" type="password"></v-ons-input>
+              <v-ons-button @click="save($event)">Save</v-ons-button>
             </v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-button class="center"  @click="handleClick($event)">Login</v-ons-button>
+              <v-ons-button @click="logout($event)">Logout</v-ons-button>
             </v-ons-list-item>
           </v-ons-list-item>
         </v-ons-list>
@@ -30,28 +29,27 @@ import axios from 'axios';
 import {globalApp} from '../main'
 
 export default {
-  name: 'Login',
+  name: 'Settings',
   data () {
       return {
-          'email': '',
-          'password': ''
+        cardId: '',
       }
   },
   methods: {
-    'handleClick': function (e) {
+    save() {
       let self = this
       axios
-        .post('https://api.padmiss.com/authenticate', {
-          'email': self.email,
-          'password': self.password
+        .put(
+          'https://api.padmiss.com/api/users/' + globalApp.loginData.userId + "/edit", {
+            token: globalApp.loginData.token,
+            rfidUid: self.cardId,
         })
         .then((response) => {
-          if(response.data.success && response.data.success === true) {
-            globalApp.login(response.data);
-          }
-
-          console.log(globalApp)
+          console.log(response.data)
         })
+    },
+    logout (e) {
+      globalApp.logout()
     }
   },
   components: {
