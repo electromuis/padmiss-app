@@ -1,6 +1,20 @@
 language: android
 sudo: false
 
+jobs:
+  include:
+  - script: echo "Running unit tests (1)"
+  - script: echo "Running unit tests (2)"
+  - stage: GitHub Release
+    script: echo "Deploying to GitHub releases ..."
+    deploy:
+      provider: releases
+      api_key: $GITHUB_OAUTH_TOKEN
+      file: "/home/travis/build/electromuis/padmiss-app/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk"
+      skip_cleanup: true
+      on:
+        tags: true
+
 android:
   components:
   - build-tools-27.0.1
