@@ -1,6 +1,12 @@
 language: android
 sudo: false
 before_deploy:
+- cp $TRAVIS_BUILD_DIR/.keystore $HOME
+- cd platforms/android/app/build/outputs/apk/release/
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/padmiss.keystore -storepass $storepass -keypass $keypass app-release-unsigned.apk padmiss
+# Verification
+- jarsigner -verify app-release-unsigned.apk
+- "${ANDROID_HOME}/build-tools/26.0.2/zipalign -v 4 app-release-unsigned.apk padmiss.apk"
 - git config --local user.name "Electromuis"
 - git config --local user.email "anton.grootes11@gmail.com"
 - git tag "$(date +'%Y%m%d%H%M%S')"
@@ -9,8 +15,8 @@ deploy:
   skip_cleanup: true
   api_key:
     secure: OWoYIr5FHdMQOIBd4TmbeHFpQ2B/BxSBYzWgXcnTupCaPHSUgLfmMqOj8yi4d8WSS+dB1wDxkxuJ7DFVozmrav60fMehFbO4qgAqH/UttIHy3BbVoj1jT/AQuwU8IcNXwwI3oO12vPqLcpsCBeStPij1NToo6g7eSU7YpCTZDSrWKlPVjW0l537n0m12VQ2B+xlnzUD8gFdcPZ8OnOnqPbemWCu0hdWenrlVe7Dnj14h8/SPARvpSF/t+j7egiczg6r5DvJszHNq36+FO7k8Q06bS9b41DoZMxpLWiIPinCBzy0c8VQt6az97X/CpsqSTHVIKNt77ydHp/dvR2VRx87R7wR+vNEu4t6HeQElNNzRju9B7CovvxagttCtd9BDZLQ9WwVsrCjPGCfIAks01WOVVe8F+EI1xxRcxN5peihMuwFVZhGR6MqYNGl0IfGxvOPaDtxKvmMhClhcxg+iwPIz92yer+ukTAVA8PTNEoPvUvNRSa2o0rZ84l7+zsaZJ4flrAn9mL/KRpU/F3TWpIUCTLWn2YS34WiuHuJ2QjE52fh6DjO5alceI+VS8pgEL4Jnbpmr1eeCrhrbP729NqqJu8lEn7YgXpNJNn6npa9qWU2F28v67Ek2Cg3/9XrHSTTDgLWY3pJ4nq/oELPqq9qRTtbGHVoZ/E9KDXLVHZk=
-  file: "platforms/android/app/build/outputs/apk/release/*.apk"
-  file_glob: "true"
+  file: padmiss.apk
+  file_glob: 'true'
   on:
     repo: electromuis/padmiss-app
 android:
@@ -23,10 +29,14 @@ env:
   global:
   - TERM=dumb
   - NODE_VERSION=8
+  - secure: B4W1H1WbsC0uUxWFylc80ZUjUWzeMiNIbe8j9Lppb2QZXlm+mQQ6ZjvFd5+vvJ7m41TVOv5ejepf7hfEvHz61WCDj6REjY+iaxBmSl5JT3Hi6oyYXQaH1r8Ze1Qvt/KEQFmWCMdmPH5hwjPpQhbuZvTmzajVoaho3uOkoFIiI4eYEe2XyMu8EH0sHdFJrHH95CYknYlqTPd68AR7S0jPpnIXBHvNSFU0plgZhZNDCsaiwIdzUiK32FriEsd8cPNFp15PetuKv6+cCBsiUnopgq+/4ba2nYLwy/9Kgn60Yn/U1p6tn71aLRsYKwqeDUgB3CLOS6cT5L0Na44KsAzpWWDaCZWZFpAAKqQDR+O2yFPeIzzEARJvl27eOmLNeWi3wLCL6kFXQYKBTy7/QQQaT5gepK+atG4DpkLSvBQQ9M6t5M7ueO1EJq0abxB4nEXD17NiXIAqGGYZKIuj9vh1P4WrWIAuAl0po1deJtrSVXg9gIEtWuvYYdSBC7rfSTE+zP+rSC/2vpjIWJuhWgxYlrXjxe1dtaXX+kL1ynqETsfvoRXN/3OlchhzplfgCHmTHgzyl0oBZsS2lSdbfzMTqz8RzxaZ9LAZxiNB9XkaZWvWW0XFxjruNnDAh3cY/JaYE3hMlNn6IN7Lf21cCnF4bhRLbErA0EOPUUuRnWumqeQ=
+  - secure: MHEO45Y2thDCyneVbIQwJmWQ6oIT2hnB2BL4377qPZdmge197KyjLYOaAcEnd/2ObsOZ4ww4By2si4sp4ujVRgAyJLyI6tqLRvJgdpylgwzRUUlOSHJ6j/PnrNnOyjgJSruYJU31SwWdrH7Tn50k2p9bwxhejmkiJhUne1Y9P24cvCkNtHUSte6Df7OtNiShs5lV10GvRmhMWttdrJFo/eS4Efmzw1sJRsy0fled45X0zThqPhcZgpIvEXnhksf6IM0vUZqNoaIXGYoMSF3PR5B4o9iaDa/yORu0yGS/PTpB2BvkU7SzofsuXHsUDozN4cQmRsIEv8j14Cz5mcFahCfBDfKEfG37tExqZbg8K5SiO0CKMdrAk8VvVokkfJcd4vdqjVx4PMVxMkBt8NcXfU5W1lH+bKdfA0MRT7JMqn3RVDUylGCI/0aDGpkkjSca/dpKZVxXWBaHMJ3cMwS5nhvz80t85QAHvvHOCj9ShxZhxmR7zurMGpjglJGEVLrv2E8+UcuoQuVENVngSDdIDdTV5rYnHe+i2gLKZtvr8855MaGHdHNK95y/bSl9RHTJCe3gdfeeU2OnvRVbot4K02K2pH3j6cXigKxIjxLCUGAZDJdqJN5dOXB6TZV3mSbomypKUSTw+cWvFyOJ92+vUZxYZpnzbVj8Cqf8KtkoDI0=
 branches:
   only:
   - master
 before_install:
+- openssl aes-256-cbc -K $encrypted_4f0330e79a83_key -iv $encrypted_4f0330e79a83_iv
+  -in padmiss.keystore.enc -out padmiss.keystore -d
 - nvm install $NODE_VERSION
 - npm install -g cordova
 install:
