@@ -1,7 +1,7 @@
 language: android
 sudo: false
 before_deploy:
-- cp $TRAVIS_BUILD_DIR/.keystore $HOME
+- cp $TRAVIS_BUILD_DIR/padmiss.keystore $HOME
 - cd platforms/android/app/build/outputs/apk/release/
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/padmiss.keystore
   -storepass $storepass -keypass $keypass app-release-unsigned.apk padmiss
