@@ -35,8 +35,7 @@ branches:
   only:
   - master
 before_install:
-- openssl aes-256-cbc -K $encrypted_4f0330e79a83_key -iv $encrypted_4f0330e79a83_iv
-  -in padmiss.keystore.enc -out padmiss.keystore -d
+- openssl enc -nosalt -aes-256-cbc -d -base64 -K $enc1 -iv $enc2 -in padmiss.keystore.enc -out padmiss.keystore
 - nvm install $NODE_VERSION
 - npm install -g cordova
 install:
