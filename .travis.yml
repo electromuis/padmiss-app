@@ -12,8 +12,6 @@ deploy:
   api_key: $GITHUB_OAUTH_TOKEN
   file: "platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk"
   skip_cleanup: true
-  on:
-    tags: true
 
 android:
   components:
