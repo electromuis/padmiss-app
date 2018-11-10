@@ -1,17 +1,18 @@
 language: android
 sudo: false
 
-jobs:
-  include:
-  - stage: GitHub Release
-    script: echo "Deploying to GitHub releases ..."
-    deploy:
-      provider: releases
-      api_key: $GITHUB_OAUTH_TOKEN
-      file: "/home/travis/build/electromuis/padmiss-app/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk"
-      skip_cleanup: true
-      on:
-        tags: true
+before_deploy:
+# Set up git user name and tag this commit
+- git config --local user.name "Electromuis"
+- git config --local user.email "anton.grootes11@gmail.com"
+- git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file: "platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk"
+  skip_cleanup: true
+  on:
+    tags: true
 
 android:
   components:
