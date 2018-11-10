@@ -3,8 +3,8 @@ sudo: false
 before_deploy:
 - cp $TRAVIS_BUILD_DIR/.keystore $HOME
 - cd platforms/android/app/build/outputs/apk/release/
-- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/padmiss.keystore -storepass $storepass -keypass $keypass app-release-unsigned.apk padmiss
-# Verification
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/padmiss.keystore
+  -storepass $storepass -keypass $keypass app-release-unsigned.apk padmiss
 - jarsigner -verify app-release-unsigned.apk
 - "${ANDROID_HOME}/build-tools/26.0.2/zipalign -v 4 app-release-unsigned.apk padmiss.apk"
 - git config --local user.name "Electromuis"
