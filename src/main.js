@@ -52,6 +52,12 @@ export const globalApp = new Vue({
 })
 
 new Vue({
+  localStorage: {
+    loginData: {
+      type: Object,
+      default: null
+    }
+  },
   render: h => h(App)
 }).$mount('#app')
 

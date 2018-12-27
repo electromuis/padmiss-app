@@ -10,13 +10,13 @@
         <v-ons-list>
           <v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-input class="center" v-model="email" placeholder="email@domain.com" type="email"></v-ons-input>
+              <v-ons-input class="input" v-model="email" placeholder="email@domain.com" type="email"></v-ons-input>
             </v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-input class="center" v-model="password" placeholder="****" type="password"></v-ons-input>
+              <v-ons-input class="input" v-model="password" placeholder="****" type="password"></v-ons-input>
             </v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-button class="center"  @click="handleClick($event)">Login</v-ons-button>
+              <v-ons-button modifier="large" @click="handleClick($event)">Login</v-ons-button>
             </v-ons-list-item>
           </v-ons-list-item>
         </v-ons-list>
@@ -47,10 +47,10 @@ export default {
         })
         .then((response) => {
           if(response.data.success && response.data.success === true) {
-            globalApp.login(response.data);
+            globalApp.login(response.data)
+          } else {
+            this.$ons.notification.toast('Wrong login', { timeout: 1000, animation: 'fall' })
           }
-
-          console.log(globalApp)
         })
     }
   },
@@ -59,3 +59,13 @@ export default {
   }
 }
 </script>
+
+<style>
+  .input {
+    width: 100%;
+  }
+
+  .input input {
+    padding: 5px;
+  }
+</style>

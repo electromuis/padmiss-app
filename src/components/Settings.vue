@@ -9,13 +9,13 @@
         <v-ons-list>
           <v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-input class="center" v-model="cardId" placeholder="00000000" type="text"></v-ons-input>
+              <v-ons-input class="input" v-model="cardId" placeholder="00000000" type="text"></v-ons-input>
             </v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-button @click="save($event)">Save</v-ons-button>
+              <v-ons-button modifier="large" @click="save($event)">Save</v-ons-button>
             </v-ons-list-item>
             <v-ons-list-item>
-              <v-ons-button @click="logout($event)">Logout</v-ons-button>
+              <v-ons-button modifier="large" @click="logout($event)">Logout</v-ons-button>
             </v-ons-list-item>
           </v-ons-list-item>
         </v-ons-list>
@@ -45,7 +45,11 @@ export default {
             rfidUid: self.cardId,
         })
         .then((response) => {
-          console.log(response.data)
+          if(response.data.success && response.data.success == true) {
+            this.$ons.notification.toast('Settings saved', {timeout: 1000, animation: 'fall'})
+          } else {
+            this.$ons.notification.toast('Saving settings failed', {timeout: 1000, animation: 'fall'})
+          }
         })
     },
     logout (e) {
@@ -57,3 +61,14 @@ export default {
   }
 }
 </script>
+
+<style>
+  .input {
+    width: 100%;
+  }
+
+  .input input {
+    padding: 5px;
+  }
+</style>
+
