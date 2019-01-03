@@ -30,16 +30,15 @@ export const globalApp = new Vue({
       let loginData = Vue.localStorage.get('loginData', null)
       if (loginData !== null) {
         this.loginData = Vue.localStorage.get('loginData', null)
-        this.pages = ['MyScores', 'Scores', 'Settings']
+        this.pages = ['My scores', 'Scores', 'Settings']
         this.pageStack = [MyScores]
       }
-      console.log(this.loginData)
     },
     login: function (data) {
       this.loginData = data
       Vue.localStorage.set('loginData', data)
 
-      this.pages = ['MyScores', 'Scores', 'Settings']
+      this.pages = ['My scores', 'Scores', 'Settings']
       this.pageStack = [MyScores]
     },
     logout: function () {

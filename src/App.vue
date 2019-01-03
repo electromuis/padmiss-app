@@ -31,7 +31,7 @@ let components = {
   'Scores': Scores,
   'Login': Login,
   'Settings': Settings,
-  'MyScores': MyScores
+  'My scores': MyScores
 }
 
 export default {
