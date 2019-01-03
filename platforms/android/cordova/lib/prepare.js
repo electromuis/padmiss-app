@@ -332,8 +332,6 @@ function updateIcons (cordovaProject, platformResourcesDir) {
         48: 'mdpi',
         72: 'hdpi',
         96: 'xhdpi',
-        144: 'xxhdpi',
-        192: 'xxxhdpi'
     };
     // find the best matching icon for a given density or size
     // @output android_icons
