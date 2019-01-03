@@ -17,7 +17,7 @@
        under the License.
  */
 
-package io.cordova.helloworld;
+package com.electromuis.padmiss;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
